@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { fadeInUp } from "@/lib/motion";
 import { skills } from "@/data/skills";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import SkillBar from "@/components/ui/SkillBar";
@@ -13,33 +11,30 @@ export default function Skills() {
 
   return (
     <SectionWrapper id="skills">
-      <motion.div variants={fadeInUp} className="mb-12">
-        <p className="mb-1 text-sm font-medium tracking-widest text-purple-400 uppercase">
+      <div className="gsap-animate mb-12">
+        <p className="mb-1 text-sm font-medium tracking-widest text-cyan-400 uppercase">
           What I work with
         </p>
         <h2 className="text-3xl font-bold text-white sm:text-4xl">Skills</h2>
-      </motion.div>
+      </div>
 
       {/* Category Tabs */}
-      <motion.div variants={fadeInUp} className="mb-10 flex flex-wrap gap-3">
+      <div className="gsap-animate mb-10 flex flex-wrap gap-3">
         {skills.map((cat, i) => (
           <button
             key={cat.category}
             onClick={() => setActiveCategory(i)}
-            className="cursor-pointer"
+            className="cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95"
           >
             <Badge active={i === activeCategory}>{cat.category}</Badge>
           </button>
         ))}
-      </motion.div>
+      </div>
 
       {/* Skill Bars */}
-      <motion.div
+      <div
         key={activeCategory}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="mx-auto max-w-xl space-y-5"
+        className="gsap-animate mx-auto max-w-xl space-y-5 animate-in fade-in slide-in-from-bottom-4 duration-500"
       >
         {skills[activeCategory].items.map((skill, i) => (
           <SkillBar
@@ -49,7 +44,7 @@ export default function Skills() {
             index={i}
           />
         ))}
-      </motion.div>
+      </div>
     </SectionWrapper>
   );
 }

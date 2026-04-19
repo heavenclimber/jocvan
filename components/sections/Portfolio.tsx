@@ -2,8 +2,7 @@
 
 import { Suspense, useState } from "react";
 import dynamic from "next/dynamic";
-import { motion, AnimatePresence } from "framer-motion";
-import { fadeInUp } from "@/lib/motion";
+import { AnimatePresence, motion } from "framer-motion"; // Keep AnimatePresence for the modal overlay
 import { projects } from "@/data/projects";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import Card from "@/components/ui/Card";
@@ -26,24 +25,24 @@ export default function Portfolio() {
 
   return (
     <SectionWrapper id="portfolio">
-      <motion.div variants={fadeInUp} className="mb-12">
-        <p className="mb-1 text-sm font-medium tracking-widest text-purple-400 uppercase">
+      <div className="gsap-animate mb-12">
+        <p className="mb-1 text-sm font-medium tracking-widest text-cyan-400 uppercase">
           Things I&apos;ve built
         </p>
         <h2 className="text-3xl font-bold text-white sm:text-4xl">
           Portfolio
         </h2>
-      </motion.div>
+      </div>
 
       {/* 3D Canvas */}
-      <motion.div variants={fadeInUp} className="mb-12">
+      <div className="gsap-animate mb-12">
         <Suspense fallback={null}>
           <Scene projects={projects} onSelect={setSelected} />
         </Suspense>
-        <p className="mt-3 text-center text-xs text-zinc-600">
+        <p className="mt-3 text-center text-xs text-zinc-400">
           Drag to rotate • Click a card to view details
         </p>
-      </motion.div>
+      </div>
 
       {/* Detail Overlay */}
       <AnimatePresence>
@@ -101,7 +100,7 @@ export default function Portfolio() {
       </AnimatePresence>
 
       {/* 2D Fallback Grid (below the 3D scene for accessibility/SEO) */}
-      <motion.div variants={fadeInUp}>
+      <div className="gsap-animate">
         <h3 className="mb-6 text-lg font-semibold text-zinc-300">
           All Projects
         </h3>
@@ -144,7 +143,7 @@ export default function Portfolio() {
             </Card>
           ))}
         </div>
-      </motion.div>
+      </div>
     </SectionWrapper>
   );
 }

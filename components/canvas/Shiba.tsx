@@ -9,6 +9,7 @@ const Shiba = forwardRef<THREE.Group>((_, ref) => {
   const group = useRef<THREE.Group>(null);
   const { scene, animations } = useGLTF("/models/shiba.glb");
   const { actions } = useAnimations(animations, group);
+  const timeRef = useRef(0);
 
   // expose ref to parent (for camera tracking)
   useEffect(() => {
@@ -25,8 +26,15 @@ const Shiba = forwardRef<THREE.Group>((_, ref) => {
   }, [actions]);
 
   useFrame((state, delta) => {
+    timeRef.current += delta;
+
+    const t = timeRef.current;
+
     if (!group.current) return;
+
     const dog = group.current;
+
+    dog.position.y = -1.5 + Math.sin(t * 6) * 0.08;
 
     // 🟡 SCROLL → forward (Z)
     const scrollMax =
@@ -35,8 +43,9 @@ const Shiba = forwardRef<THREE.Group>((_, ref) => {
     const progress =
       scrollMax > 0 ? Math.min(Math.max(window.scrollY / scrollMax, 0), 1) : 0;
 
-    const targetZ = 5 - progress * 35;
+    const targetZ = 5 - progress * 20;
     dog.position.z = THREE.MathUtils.lerp(dog.position.z, targetZ, 0.08);
+    dog.position.z = THREE.MathUtils.clamp(dog.position.z, -20, 5);
 
     // 🟢 CURSOR → horizontal target
     const targetX = state.pointer.x * 6;
@@ -66,15 +75,10 @@ const Shiba = forwardRef<THREE.Group>((_, ref) => {
       lookUp + targetY,
       0.08,
     );
-
-    // 🪶 fallback bounce
-    if (!actions || Object.keys(actions).length === 0) {
-      dog.position.y = -1.5 + Math.sin(state.clock.elapsedTime * 8) * 0.1;
-    }
   });
 
   return (
-    <group ref={group} position={[0, -1.5, 5]}>
+    <group ref={group} position={[0, -0.8, 5]}>
       <primitive object={scene} scale={1.5} />
     </group>
   );
@@ -83,3 +87,5 @@ const Shiba = forwardRef<THREE.Group>((_, ref) => {
 export default Shiba;
 
 useGLTF.preload("/models/shiba.glb");
+
+Shiba.displayName = "Shiba";
