@@ -65,4 +65,5 @@ export interface ProjectItem {
 export interface NavLink {
   label: string;
   href: string;
+  index?: number;
 }

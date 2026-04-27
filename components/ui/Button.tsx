@@ -17,9 +17,9 @@ export default function Button({
 
   const variants = {
     primary:
-      "bg-gradient-to-r from-purple-600 to-cyan-500 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105",
+      "bg-gradient-to-r from-blue-600 to-sky-400 text-white shadow-lg shadow-blue-600/30 hover:shadow-blue-500/50 hover:scale-105",
     outline:
-      "border border-white/20 text-white hover:border-purple-400/50 hover:bg-white/5 hover:scale-105",
+      "border border-white/20 text-white hover:border-blue-400/50 hover:bg-blue-500/10 hover:scale-105",
   };
 
   const classes = cn(baseStyles, variants[variant], className);

@@ -128,7 +128,7 @@ function Rig({
 
 // ── Main Scene ───────────────────────────────────────────────────────
 export default function BackgroundScene() {
-  const targetRef = useRef<THREE.Object3D>(null);
+  const targetRef = useRef<THREE.Group>(null);
 
   return (
     <div className="fixed inset-0 -z-10" style={{ pointerEvents: "none" }}>

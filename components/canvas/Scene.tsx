@@ -1,85 +1,123 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Stars } from "@react-three/drei";
+import * as THREE from "three";
 import type { ProjectItem } from "@/types";
 import ProjectCard3D from "./ProjectCard3D";
 
 interface SceneProps {
   projects: ProjectItem[];
+  selectedProject: ProjectItem | null;
   onSelect: (project: ProjectItem) => void;
 }
 
-// Invisible boundaries to keep objects corralled
-function Boundaries() {
+function GlowingCore() {
+  const coreRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state, delta) => {
+    if (coreRef.current) {
+      coreRef.current.rotation.y += delta * 0.2;
+      coreRef.current.rotation.x += delta * 0.1;
+      // Pulse scale
+      const scale = 1 + Math.sin(state.clock.elapsedTime * 2) * 0.05;
+      coreRef.current.scale.set(scale, scale, scale);
+    }
+  });
+
   return (
-    <>
-      <RigidBody type="fixed" position={[0, -5, 0]}>
-        <CuboidCollider args={[15, 0.5, 15]} />
-      </RigidBody>
-      <RigidBody type="fixed" position={[0, 5, 0]}>
-        <CuboidCollider args={[15, 0.5, 15]} />
-      </RigidBody>
-      <RigidBody type="fixed" position={[-6, 0, 0]}>
-        <CuboidCollider args={[0.5, 15, 15]} />
-      </RigidBody>
-      <RigidBody type="fixed" position={[6, 0, 0]}>
-        <CuboidCollider args={[0.5, 15, 15]} />
-      </RigidBody>
-      <RigidBody type="fixed" position={[0, 0, -6]}>
-        <CuboidCollider args={[15, 15, 0.5]} />
-      </RigidBody>
-      <RigidBody type="fixed" position={[0, 0, 4]}>
-        <CuboidCollider args={[15, 15, 0.5]} />
-      </RigidBody>
-    </>
+    <mesh ref={coreRef}>
+      <sphereGeometry args={[2, 32, 32]} />
+      <meshStandardMaterial
+        color="#a855f7"
+        emissive="#a855f7"
+        emissiveIntensity={2}
+        wireframe
+      />
+      <pointLight color="#a855f7" intensity={2} distance={20} />
+    </mesh>
   );
 }
 
-// A central attractor force
-function Attractor() {
-  // We can just rely on the objects moving towards center inside the ProjectCard3D useFrame,
-  // or we can just let them bounce freely in the bounds. For simplicity, bounds are enough,
-  // but let's add a subtle pull towards [0,0,0] in the card itself.
+function CameraController({ 
+  selectedProject, 
+  planetPositions 
+}: { 
+  selectedProject: ProjectItem | null;
+  planetPositions: React.MutableRefObject<Record<string, THREE.Vector3>>;
+}) {
+  const { camera } = useThree();
+  const currentLookAt = useRef(new THREE.Vector3(0, 0, 0));
+
+  useFrame(() => {
+    if (selectedProject && planetPositions.current[selectedProject.id]) {
+      const pos = planetPositions.current[selectedProject.id];
+      // Target camera position: right and forward
+      const targetPos = new THREE.Vector3(pos.x + 3.5, pos.y + 1, pos.z + 6);
+      camera.position.lerp(targetPos, 0.05);
+      
+      // Look at a point to the right of the planet so the planet is on the left
+      const targetLookAt = new THREE.Vector3(pos.x + 3.5, pos.y, pos.z);
+      currentLookAt.current.lerp(targetLookAt, 0.05);
+      camera.lookAt(currentLookAt.current);
+    } else {
+      // Return to overview
+      const targetPos = new THREE.Vector3(0, 10, 18);
+      camera.position.lerp(targetPos, 0.04);
+      
+      const targetLookAt = new THREE.Vector3(0, 0, 0);
+      currentLookAt.current.lerp(targetLookAt, 0.04);
+      camera.lookAt(currentLookAt.current);
+    }
+  });
   return null;
 }
 
-export default function Scene({ projects, onSelect }: SceneProps) {
+export default function Scene({ projects, selectedProject, onSelect }: SceneProps) {
+  const planetPositions = useRef<Record<string, THREE.Vector3>>({});
+
   return (
     <Canvas
-      className="!h-[500px] w-full rounded-2xl"
+      className="h-full w-full rounded-2xl"
       gl={{ antialias: true, alpha: true }}
       dpr={[1, 2]}
-      camera={{ position: [0, 0, 10], fov: 45 }}
+      camera={{ position: [0, 10, 18], fov: 45 }}
     >
-      <ambientLight intensity={0.4} />
+      <ambientLight intensity={0.2} />
       <directionalLight position={[5, 10, 5]} intensity={1} color="#a855f7" />
       <directionalLight position={[-5, -5, -5]} intensity={0.5} color="#06b6d4" />
       
-      {/* Physics World with zero gravity */}
-      <Physics gravity={[0, 0, 0]} interpolate>
-        <Boundaries />
-        
-        {projects.map((project, i) => {
-          // Spread them out initially
-          const x = (Math.random() - 0.5) * 8;
-          const y = (Math.random() - 0.5) * 6;
-          const z = (Math.random() - 0.5) * 4;
-          
-          return (
-            <ProjectCard3D
-              key={project.id}
-              project={project}
-              initialPosition={[x, y, z]}
-              onClick={() => onSelect(project)}
-            />
-          );
-        })}
-      </Physics>
+      <Stars radius={50} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
       
-      {/* Invisible plane for catching PointerEvents to calculate drag un-projected positions */}
-      {/* The pointer events are handled directly on the 3D meshes in ProjectCard3D via @use-gesture */}
+      <GlowingCore />
+      
+      <CameraController 
+        selectedProject={selectedProject} 
+        planetPositions={planetPositions} 
+      />
+
+      {projects.map((project, i) => {
+        // Distribute planets in orbits
+        const orbitRadius = 6 + i * 2.5; // spaced out
+        const orbitSpeed = 0.2 + (projects.length - i) * 0.05; // inner planets faster
+        const initialAngle = (i / projects.length) * Math.PI * 2;
+        
+        return (
+          <ProjectCard3D
+            key={project.id}
+            project={project}
+            orbitRadius={orbitRadius}
+            orbitSpeed={orbitSpeed}
+            initialAngle={initialAngle}
+            isSelected={selectedProject?.id === project.id}
+            onPositionUpdate={(pos) => {
+              planetPositions.current[project.id] = pos.clone();
+            }}
+            onClick={() => onSelect(project)}
+          />
+        );
+      })}
     </Canvas>
   );
 }

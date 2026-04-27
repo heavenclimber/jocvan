@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,13 +7,12 @@
 /* ── CSS Custom Properties ── */
 :root {
   --background: transparent;
-  --foreground: #1c1c20;
+  --foreground: #e0f2fe;
 }
 
 /* ── Globals ── */
 html {
   scroll-behavior: smooth;
-  /* Lighten up text shadows against snowy BG */
 }
 
 body {
@@ -32,16 +33,138 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(168, 85, 247, 0.3);
+  background: rgba(59, 130, 246, 0.3);
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(168, 85, 247, 0.5);
+  background: rgba(59, 130, 246, 0.5);
 }
 
 /* ── Selection highlight ── */
 ::selection {
-  background: rgba(168, 85, 247, 0.3);
+  background: rgba(59, 130, 246, 0.3);
   color: #ffffff;
+}
+
+/* ── Initially hide navbar so it doesn't flash during preloader ── */
+header {
+  opacity: 0;
+  transform: translateY(-100px);
+}
+
+/* ══════════════════════════════════════════════
+ *  PRELOADER
+ * ══════════════════════════════════════════════ */
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: #000814;
+}
+
+/* ── Loader content (centred overlay) ── */
+.preloader__content {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  pointer-events: none;
+}
+
+/* ── Logo ── */
+.preloader__logo {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+}
+
+.preloader__logo-text {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  background: linear-gradient(135deg, #00c99b 0%, #ff0ea1 50%, #ffd392 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  z-index: 2;
+}
+
+.preloader__logo-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  animation: preloader-ring-pulse 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.preloader__logo-ring::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 201, 155, 0.2);
+  animation: preloader-ring-pulse 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.6s;
+}
+
+@keyframes preloader-ring-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50%      { transform: scale(1.15); opacity: 0.2; }
+}
+
+/* ── Tagline ── */
+.preloader__tagline {
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── Progress bar ── */
+.preloader__progress-track {
+  width: 200px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.preloader__progress-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #00c99b, #ff0ea1);
+  transition: width 0.15s ease;
+}
+
+/* ── Percentage counter ── */
+.preloader__percent {
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.1em;
+}
+
+/* ── SVG Shape Overlay ── */
+.preloader__overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.preloader__overlay-path {
+  /* Individual paths get their fill via inline url(#gradient) */
 }

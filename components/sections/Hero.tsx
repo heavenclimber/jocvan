@@ -2,42 +2,45 @@
 
 import { profile } from "@/data/profile";
 import Button from "@/components/ui/Button";
-import SectionWrapper from "@/components/layout/SectionWrapper";
+import AnimatedName from "@/components/ui/AnimatedName";
+import { useDict } from "@/lib/DictContext";
 
-export default function Hero() {
+export default function Hero({ loaded = true }: { loaded?: boolean }) {
+  const dict = useDict();
+
   return (
-    <SectionWrapper
-      id="hero"
-      noBackground
-      className="flex flex-col items-center justify-center text-center"
-    >
-      {/* Content */}
-      <div className="relative z-10 mx-auto max-w-4xl px-6 my-auto">
-        <div className="gsap-animate mb-4 text-sm font-bold tracking-widest text-cyan-400 uppercase drop-shadow-md">
-          Hello, I&apos;m
+    <div className="flex h-full w-full items-center justify-center text-center">
+      <div className="relative z-10 flex flex-col items-center px-6 max-w-4xl mx-auto">
+        {/* Greeting */}
+        <p className="gsap-animate mb-6 text-sm font-bold tracking-widest text-blue-400 uppercase drop-shadow-md">
+          {dict.hero.greeting}
+        </p>
+
+        {/* Animated SVG Name */}
+        <div className="gsap-animate mb-6 w-full max-w-xl" style={{ overflow: "visible" }}>
+          <AnimatedName loaded={loaded} />
         </div>
 
-        <h1 className="gsap-animate mb-4 bg-gradient-to-r from-zinc-100 via-zinc-200 to-white bg-clip-text text-5xl leading-tight font-black tracking-tight text-transparent drop-shadow-md sm:text-7xl">
-          {profile.name}
-        </h1>
-
+        {/* Title */}
         <p className="gsap-animate mb-2 text-xl font-bold text-zinc-100 sm:text-2xl drop-shadow-sm">
           {profile.title}
         </p>
 
+        {/* Tagline */}
         <p className="gsap-animate mx-auto mb-10 max-w-lg text-base font-medium text-zinc-300 drop-shadow-sm">
           {profile.tagline}
         </p>
 
+        {/* CTA Buttons */}
         <div className="gsap-animate flex flex-wrap items-center justify-center gap-4">
           <Button href="/resume.pdf" variant="primary">
-            Download CV
+            {dict.hero.downloadCV}
           </Button>
-          <Button href="#about" variant="outline">
-            Get in Touch
+          <Button href="#contact" variant="outline">
+            {dict.hero.getInTouch}
           </Button>
         </div>
       </div>
-    </SectionWrapper>
+    </div>
   );
 }

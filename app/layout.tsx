@@ -1,45 +1,12 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { SITE_CONFIG } from "@/lib/constants";
-import Navbar from "@/components/layout/Navbar";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: SITE_CONFIG.title,
-  description: SITE_CONFIG.description,
-  metadataBase: new URL(SITE_CONFIG.url),
-  openGraph: {
-    title: SITE_CONFIG.title,
-    description: SITE_CONFIG.description,
-    url: SITE_CONFIG.url,
-    type: "website",
-  },
-};
-
+// Root layout - minimal shell. The full layout (fonts, Navbar, DictProvider)
+// lives in app/[lang]/layout.tsx which is nested inside this.
+// We intentionally omit <html>/<body> here because the [lang] layout provides them.
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
-  return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
-        <Navbar />
-        {children}
-      </body>
-    </html>
-  );
+}) {
+  return children;
 }

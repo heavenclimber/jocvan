@@ -7,29 +7,32 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { Suspense } from "react";
 import BabyDog from "@/components/canvas/BabyDog";
+import { useDict } from "@/lib/DictContext";
 
 export default function About() {
+  const dict = useDict();
   const facts = [
-    { label: "Location", value: profile.location },
-    { label: "Email", value: profile.email },
-    { label: "Languages", value: profile.languages.join(", ") },
+    { label: dict.about.location, value: profile.location },
+    { label: dict.about.email, value: profile.email },
+    { label: dict.about.languages, value: profile.languages.join(", ") },
   ];
 
   return (
     <SectionWrapper id="about">
       {/* Section Heading */}
       <div className="gsap-animate mb-12">
-        <p className="mb-1 text-sm font-medium tracking-widest text-cyan-400 uppercase">
-          Get to know me
+        <p className="mb-1 text-sm font-medium tracking-widest text-blue-400 uppercase">
+          {dict.about.eyebrow}
         </p>
-        <h2 className="text-3xl font-bold text-white sm:text-4xl">About Me</h2>
+        <h2 className="text-3xl font-bold text-white sm:text-4xl">{dict.about.heading}</h2>
       </div>
 
       <div className="grid items-start gap-12 md:grid-cols-5">
         {/* Avatar */}
         <div className="gsap-animate flex justify-center md:col-span-2">
           <div className="relative">
-            <div className="absolute -inset-1 rounded-3xl bg-linear-to-br from-purple-500/40 to-cyan-400/40 blur-xl opacity-50" />
+            <div className="absolute -inset-1 rounded-3xl bg-linear-to-br from-blue-500/40 to-sky-400/40 blur-xl opacity-50" />
+
             <div className="relative h-64 w-64 overflow-hidden rounded-3xl border border-white/20 bg-white/5 backdrop-blur-3xl sm:h-72 sm:w-72 shadow-[0_8px_32px_0_rgba(255,255,255,0.05)] cursor-pointer">
               {/* Placeholder avatar — replace with next/image once you add your photo */}
               <div className="h-full w-full">

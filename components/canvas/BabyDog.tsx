@@ -48,7 +48,7 @@ export default function BabyDog({
   }, [hovered]);
 
   const handleClick = useCallback(
-    (e: THREE.Event) => {
+    (e: any) => {
       e.stopPropagation();
       if (names.length === 0) return;
 
