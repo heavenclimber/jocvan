@@ -16,6 +16,9 @@ export default class ExperienceScene extends Phaser.Scene {
   
   activeNodeId: string | null = null;
   totalWidth: number = 0;
+  
+  // External input from React UI
+  joystickDir: "LEFT" | "RIGHT" | "NONE" = "NONE";
 
   constructor() {
     super("ExperienceScene");
@@ -31,6 +34,11 @@ export default class ExperienceScene extends Phaser.Scene {
     this.load.spritesheet("char_sprite", "/images/assets/char/sprite.png", {
       frameWidth: 88,
       frameHeight: 165,
+    });
+    // Load working sprite (1439x330 -> 1 row, 5 frames -> ~287x330 per frame)
+    this.load.spritesheet("char_working", "/images/assets/char/working.png", {
+      frameWidth: 287,
+      frameHeight: 330,
     });
   }
 
@@ -100,7 +108,7 @@ export default class ExperienceScene extends Phaser.Scene {
       this.nodeVisuals.push({ marker, textCompany, textDate });
     });
 
-    // Create animations (4 frames idle, 4 frames run)
+    // Create animations
     this.anims.create({
       key: "idle",
       frames: this.anims.generateFrameNumbers("char_sprite", { start: 0, end: 3 }),
@@ -115,10 +123,18 @@ export default class ExperienceScene extends Phaser.Scene {
       repeat: -1,
     });
 
+    // Working animation (5 frames)
+    this.anims.create({
+      key: "work",
+      frames: this.anims.generateFrameNumbers("char_working", { start: 0, end: 4 }),
+      frameRate: 6,
+      repeat: -1,
+    });
+
     // Create player sprite
     // Added +12 offset to Y to account for transparent space at the bottom of the sprite frames
     this.player = this.add.sprite(100, groundY + 12, "char_sprite").setOrigin(0.5, 1);
-    this.player.setScale(0.7); // Scale down if needed
+    this.player.setScale(0.7); // Original scale
     this.player.play("idle");
 
     // Camera setup
@@ -158,10 +174,6 @@ export default class ExperienceScene extends Phaser.Scene {
     // Input
     if (this.input.keyboard) {
       this.cursors = this.input.keyboard.createCursorKeys();
-    }
-    
-    // Add WASD as well
-    if (this.input.keyboard) {
       this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
       this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
     }
@@ -177,27 +189,20 @@ export default class ExperienceScene extends Phaser.Scene {
     
     // Check left
     const aKey = this.input.keyboard?.keys[Phaser.Input.Keyboard.KeyCodes.A] as Phaser.Input.Keyboard.Key;
-    if (this.cursors.left.isDown || (aKey && aKey.isDown)) {
+    const dKey = this.input.keyboard?.keys[Phaser.Input.Keyboard.KeyCodes.D] as Phaser.Input.Keyboard.Key;
+
+    const moveLeft = this.cursors.left.isDown || (aKey && aKey.isDown) || this.joystickDir === "LEFT";
+    const moveRight = this.cursors.right.isDown || (dKey && dKey.isDown) || this.joystickDir === "RIGHT";
+
+    if (moveLeft) {
       this.player.x -= this.speed * deltaSec;
       this.player.flipX = true;
       isMoving = true;
     } 
-    // Check right
-    else if (this.cursors.right.isDown || (aKey && (this.input.keyboard?.keys[Phaser.Input.Keyboard.KeyCodes.D] as Phaser.Input.Keyboard.Key).isDown)) {
+    else if (moveRight) {
       this.player.x += this.speed * deltaSec;
       this.player.flipX = false;
       isMoving = true;
-    }
-
-    // Animation state
-    if (isMoving) {
-      if (this.player.anims.currentAnim?.key !== "run") {
-        this.player.play("run");
-      }
-    } else {
-      if (this.player.anims.currentAnim?.key !== "idle") {
-        this.player.play("idle");
-      }
     }
 
     // Boundaries
@@ -225,6 +230,28 @@ export default class ExperienceScene extends Phaser.Scene {
       if (this.activeNodeId !== null) {
         this.activeNodeId = null;
         this.reactEvents.emit("nodeLeft");
+      }
+    }
+
+    // Animation & Scale state
+    if (isMoving) {
+      if (this.player.anims.currentAnim?.key !== "run") {
+        this.player.play("run");
+        this.player.setScale(0.7); // Original sprite scale
+      }
+    } else {
+      if (this.activeNodeId !== null) {
+        if (this.player.anims.currentAnim?.key !== "work") {
+          this.player.play("work");
+          // The working sprite is 330px tall, which is 2x taller than the 165px sprite. 
+          // Halving the scale (0.7 / 2 = 0.35) makes it visually proportionate.
+          this.player.setScale(0.35); 
+        }
+      } else {
+        if (this.player.anims.currentAnim?.key !== "idle") {
+          this.player.play("idle");
+          this.player.setScale(0.7); // Original sprite scale
+        }
       }
     }
     

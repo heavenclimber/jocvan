@@ -87,6 +87,25 @@ export default function HomeClient() {
         });
 
         sections.forEach((section) => {
+          // 1. Animate the entire section wrapper (fade and scale)
+          const innerWrapper = section.children[0];
+          if (innerWrapper) {
+            gsap.from(innerWrapper, {
+              opacity: 0,
+              scale: 0.85,
+              duration: 1,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: section,
+                containerAnimation: scrollTween,
+                start: "left 80%", // Trigger when left edge is 80% across the screen
+                end: "right 20%",  // Reverse when right edge is 20% across the screen
+                toggleActions: "play reverse play reverse",
+              },
+            });
+          }
+
+          // 2. Animate specific internal elements for a staggered effect
           const q = gsap.utils.selector(section);
           gsap.from(q(".gsap-animate"), {
             y: 50,
@@ -97,8 +116,9 @@ export default function HomeClient() {
             scrollTrigger: {
               trigger: section,
               containerAnimation: scrollTween,
-              start: "left center",
-              toggleActions: "play none none reverse",
+              start: "left 75%",
+              end: "right 25%",
+              toggleActions: "play reverse play reverse",
             },
           });
         });

@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { experience } from "@/data/experience";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import Badge from "@/components/ui/Badge";
+import Joystick from "@/components/ui/Joystick";
 import { useDict } from "@/lib/DictContext";
 import type { ExperienceItem } from "@/types";
 
@@ -31,6 +32,15 @@ export default function Experience() {
   const handleNodeLeft = useCallback(() => {
     setActiveJob(null);
   }, []);
+
+  const handleJoystickMove = useCallback((direction: "LEFT" | "RIGHT" | "NONE") => {
+    if (!gameRef.current) return;
+    const scene = gameRef.current.scene.getScene("ExperienceScene");
+    if (scene) {
+      scene.joystickDir = direction;
+    }
+  }, []);
+
   return (
     <SectionWrapper id="experience" className="flex flex-col !overflow-hidden">
       <div className="gsap-animate mb-6 flex-shrink-0">
@@ -59,7 +69,7 @@ export default function Experience() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
-                className="absolute top-4 right-4 bottom-4 w-full max-w-sm bg-[#000814]/80 border border-white/10 rounded-xl p-6 backdrop-blur-md overflow-y-auto pointer-events-auto shadow-2xl"
+                className="absolute top-4 right-4 bottom-4 w-full max-w-sm bg-[#000814]/80 border border-white/10 rounded-xl p-6 backdrop-blur-md overflow-y-auto pointer-events-auto shadow-2xl z-20"
               >
                 <div className="flex flex-col gap-2 mb-4">
                   <h3 className="text-2xl font-bold text-white leading-tight">{activeJob.role}</h3>
@@ -85,20 +95,29 @@ export default function Experience() {
             )}
           </AnimatePresence>
 
-          {/* Helper Text */}
-          <AnimatePresence mode="wait">
-            {!activeJob && (
-              <motion.div
-                key="helper"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/50 px-6 py-2 rounded-full backdrop-blur-sm text-zinc-300 text-sm font-medium pointer-events-none border border-white/10"
-              >
-                Use Left / Right arrow keys to explore
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* Helper Text & Joystick Overlay */}
+          <div className="absolute bottom-6 left-0 right-0 flex justify-between items-end px-6 pointer-events-none z-30">
+            {/* Draggable Joystick */}
+            <div className="pointer-events-auto">
+              <Joystick onMove={handleJoystickMove} />
+            </div>
+
+            {/* Helper Text */}
+            <AnimatePresence mode="wait">
+              {!activeJob && (
+                <motion.div
+                  key="helper"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="bg-black/50 px-6 py-2 rounded-full backdrop-blur-sm text-zinc-300 text-sm font-medium border border-white/10 mb-6"
+                >
+                  Use Joystick or Left/Right arrows to explore
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
         </div>
       </div>
     </SectionWrapper>

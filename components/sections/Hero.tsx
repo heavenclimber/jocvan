@@ -33,7 +33,7 @@ export default function Hero({ loaded = true }: { loaded?: boolean }) {
 
         {/* CTA Buttons */}
         <div className="gsap-animate flex flex-wrap items-center justify-center gap-4">
-          <Button href="/resume.pdf" variant="primary">
+          <Button href="/doc/Jovan_Maurel_Bastian.pdf" variant="primary">
             {dict.hero.downloadCV}
           </Button>
           <Button href="#contact" variant="outline">

@@ -1,16 +1,16 @@
 import type { Profile } from "@/types";
 
 export const profile: Profile = {
-  name: "Jovan Bastian",
-  title: "Full-Stack Developer",
-  tagline: "Crafting digital experiences with code & creativity",
+  name: "Jovan Maurel Bastian",
+  title: "Software Developer — Frontend / Fullstack",
+  tagline: "Building enterprise-grade web applications in banking & financial systems",
   bio: [
-    "I'm a passionate full-stack developer specializing in building modern web applications with cutting-edge technologies.",
-    "I love transforming complex problems into elegant, intuitive solutions that make a real impact.",
+    "Software Developer with strong experience in frontend engineering and growing specialization in fullstack and backend-oriented banking systems.",
+    "Proven track record in building, integrating, and maintaining enterprise-grade web applications, hybrid systems, and unified messaging platforms within regulated financial environments.",
   ],
   avatar: "/images/avatar.jpg",
-  location: "Indonesia",
-  email: "hello@jocvan.dev",
+  location: "Greater Jakarta, Indonesia",
+  email: "jcjo92@gmail.com",
   languages: ["English", "Indonesian"],
   socials: [
     { platform: "GitHub", url: "https://github.com/jocvan", icon: "github" },
@@ -18,11 +18,6 @@ export const profile: Profile = {
       platform: "LinkedIn",
       url: "https://linkedin.com/in/jocvan",
       icon: "linkedin",
-    },
-    {
-      platform: "Twitter",
-      url: "https://twitter.com/jocvan",
-      icon: "twitter",
     },
   ],
 };
