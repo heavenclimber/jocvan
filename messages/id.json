@@ -1,0 +1,47 @@
+{
+  "nav": {
+    "home": "Beranda",
+    "about": "Tentang",
+    "education": "Pendidikan",
+    "skills": "Keahlian",
+    "experience": "Pengalaman",
+    "portfolio": "Portofolio",
+    "contact": "Kontak"
+  },
+  "hero": {
+    "greeting": "Halo, Saya",
+    "downloadCV": "Unduh CV",
+    "getInTouch": "Hubungi Saya"
+  },
+  "about": {
+    "eyebrow": "Kenali saya lebih dekat",
+    "heading": "Tentang Saya",
+    "location": "Lokasi",
+    "email": "Email",
+    "languages": "Bahasa"
+  },
+  "education": {
+    "eyebrow": "Perjalanan akademik saya",
+    "heading": "Pendidikan"
+  },
+  "skills": {
+    "eyebrow": "Yang saya kerjakan",
+    "heading": "Keahlian"
+  },
+  "experience": {
+    "eyebrow": "Tempat saya pernah bekerja",
+    "heading": "Pengalaman"
+  },
+  "portfolio": {
+    "eyebrow": "Karya saya",
+    "heading": "Portofolio",
+    "viewCode": "Lihat Kode",
+    "liveDemo": "Demo Langsung"
+  },
+  "contact": {
+    "eyebrow": "Apa selanjutnya?",
+    "heading": "Hubungi Saya",
+    "body": "Meskipun saat ini saya tidak sedang mencari peluang baru, kotak masuk saya selalu terbuka. Jika kamu punya pertanyaan atau sekadar ingin menyapa, saya akan berusaha membalas secepatnya!",
+    "cta": "Sapa Saya"
+  }
+}
