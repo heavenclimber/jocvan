@@ -32,7 +32,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: SITE_CONFIG.title,
   description: SITE_CONFIG.description,
-  keywords: SITE_CONFIG.keywords,
+  keywords: [...SITE_CONFIG.keywords],
   authors: [{ name: "Jovan Maurel Bastian", url: SITE_CONFIG.url }],
   creator: "Jovan Maurel Bastian",
   metadataBase: new URL(SITE_CONFIG.url),
