@@ -14,7 +14,7 @@ export const SITE_CONFIG = {
   title: "Jovan Maurel Bastian — Frontend Developer & Software Engineer",
   description:
     "Personal portfolio of Jovan Maurel Bastian (Jovan IT), a Frontend Developer specializing in React, Next.js, and interactive 3D web experiences.",
-  url: "https://jocvan.dev",
+  url: "https://jovanbastian.vercel.app",
   keywords: [
     "Jovan Maurel Bastian",
     "Jovan Bastian",
