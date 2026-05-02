@@ -8,7 +8,6 @@ import type { Locale } from "@/lib/locales";
 import { DictProvider } from "@/lib/DictContext";
 import Navbar from "@/components/layout/Navbar";
 import { BackgroundProvider } from "@/lib/BackgroundContext";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Viewport } from "next";
 import "@/app/globals.css";
 
@@ -78,6 +77,23 @@ export default async function LocaleLayout({
       lang={lang}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        {SITE_CONFIG.gaId !== "G-XXXXXXXXXX" && (
+          <>
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${SITE_CONFIG.gaId}`}></script>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${SITE_CONFIG.gaId}');
+                `,
+              }}
+            />
+          </>
+        )}
+      </head>
       <body className="min-h-full flex flex-col">
         <BackgroundProvider>
           <DictProvider dict={dict}>
@@ -85,7 +101,6 @@ export default async function LocaleLayout({
             {children}
           </DictProvider>
         </BackgroundProvider>
-        {SITE_CONFIG.gaId !== "G-XXXXXXXXXX" && <GoogleAnalytics gaId={SITE_CONFIG.gaId} />}
       </body>
     </html>
   );
