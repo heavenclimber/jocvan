@@ -34,21 +34,21 @@ export default function Education() {
               <GraduationCap size={18} />
               {dict.education.eyebrow}
             </p>
-            <h2 className="text-4xl font-bold text-white sm:text-5xl lg:text-6xl tracking-tight">
+            <h2 className="text-2xl font-bold text-white sm:text-4xl md:text-5xl lg:text-6xl tracking-tight">
               {dict.education.heading}
             </h2>
           </div>
 
-          <div className="gsap-animate relative p-8 sm:p-10 rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-md shadow-2xl overflow-hidden group hover:border-blue-500/30 transition-colors duration-500">
+          <div className="gsap-animate relative p-5 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-md shadow-2xl overflow-hidden group hover:border-blue-500/30 transition-colors duration-500">
             {/* Subtle glow effect */}
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             
             <div className="relative z-10 flex flex-col gap-6">
               <div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 leading-tight">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 leading-tight">
                   {binus.degree}
                 </h3>
-                <h4 className="text-xl sm:text-2xl font-medium text-blue-400">
+                <h4 className="text-base sm:text-xl md:text-2xl font-medium text-blue-400">
                   {binus.institution}
                 </h4>
               </div>
@@ -66,7 +66,7 @@ export default function Education() {
 
               <div className="h-px w-full bg-gradient-to-r from-white/20 to-transparent my-2" />
 
-              <p className="text-lg text-zinc-300 leading-relaxed font-light">
+              <p className="text-sm sm:text-lg text-zinc-300 leading-relaxed font-light">
                 {binus.description}
               </p>
 

@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer
       id="footer"
-      className="border-t border-white/10 bg-[#050508] px-6 py-12"
+      className="border-t border-white/10 bg-[#050508] px-4 py-8 sm:px-6 sm:py-12"
     >
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-8">
         {/* Nav Links */}

@@ -20,20 +20,20 @@ export default function About() {
   return (
     <SectionWrapper id="about">
       {/* Section Heading */}
-      <div className="gsap-animate mb-12">
+      <div className="gsap-animate mb-6 sm:mb-12">
         <p className="mb-1 text-sm font-medium tracking-widest text-blue-400 uppercase">
           {dict.about.eyebrow}
         </p>
-        <h2 className="text-3xl font-bold text-white sm:text-4xl">{dict.about.heading}</h2>
+        <h2 className="text-2xl font-bold text-white sm:text-3xl md:text-4xl">{dict.about.heading}</h2>
       </div>
 
-      <div className="grid items-start gap-12 md:grid-cols-5">
+      <div className="grid items-start gap-6 sm:gap-12 md:grid-cols-5">
         {/* Avatar */}
         <div className="gsap-animate flex justify-center md:col-span-2">
           <div className="relative">
             <div className="absolute -inset-1 rounded-3xl bg-linear-to-br from-blue-500/40 to-sky-400/40 blur-xl opacity-50" />
 
-            <div className="relative h-64 w-64 overflow-hidden rounded-3xl border border-white/20 bg-white/5 backdrop-blur-3xl sm:h-72 sm:w-72 shadow-[0_8px_32px_0_rgba(255,255,255,0.05)] cursor-pointer">
+            <div className="relative h-48 w-48 sm:h-64 sm:w-64 overflow-hidden rounded-3xl border border-white/20 bg-white/5 backdrop-blur-3xl md:h-72 md:w-72 shadow-[0_8px_32px_0_rgba(255,255,255,0.05)] cursor-pointer">
               {/* Placeholder avatar — replace with next/image once you add your photo */}
               <div className="h-full w-full">
                 <Canvas camera={{ position: [0, 4, 8], fov: 50 }}>
@@ -58,13 +58,13 @@ export default function About() {
         {/* Bio & Facts */}
         <div className="space-y-6 md:col-span-3">
           {profile.bio.map((paragraph, i) => (
-            <p key={i} className="gsap-animate leading-relaxed text-zinc-300">
+            <p key={i} className="gsap-animate leading-relaxed text-zinc-300 text-sm sm:text-base">
               {paragraph}
             </p>
           ))}
 
           {/* Quick Facts */}
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-3 grid-cols-1 sm:grid-cols-3">
             {facts.map((f) => (
               <div
                 key={f.label}

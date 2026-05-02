@@ -31,7 +31,7 @@ export default function Portfolio() {
         <p className="mb-1 text-sm font-medium tracking-widest text-blue-400 uppercase">
           {dict.portfolio.eyebrow}
         </p>
-        <h2 className="text-3xl font-bold text-white sm:text-4xl">
+        <h2 className="text-2xl font-bold text-white sm:text-3xl md:text-4xl">
           {dict.portfolio.heading}
         </h2>
       </div>
@@ -71,16 +71,16 @@ export default function Portfolio() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="absolute inset-y-0 right-0 z-10 w-full max-w-md flex flex-col justify-center overflow-y-auto border-l border-white/10 bg-[#000814]/90 p-8 backdrop-blur-xl shadow-2xl pointer-events-auto"
+              className="absolute inset-y-0 right-0 left-0 sm:left-auto z-10 w-full sm:max-w-md flex flex-col justify-center overflow-y-auto border-l border-white/10 bg-[#000814]/95 sm:bg-[#000814]/90 p-6 sm:p-8 backdrop-blur-xl shadow-2xl pointer-events-auto"
             >
-              <h3 className="mb-4 text-3xl font-bold text-white">
+              <h3 className="mb-3 sm:mb-4 text-2xl sm:text-3xl font-bold text-white">
                 {selected.title}
               </h3>
-              <p className="mb-6 leading-relaxed text-zinc-300">
+              <p className="mb-4 sm:mb-6 leading-relaxed text-zinc-300 text-sm sm:text-base">
                 {selected.description}
               </p>
 
-              <div className="mb-8 flex flex-wrap gap-2">
+              <div className="mb-6 sm:mb-8 flex flex-wrap gap-2">
                 {selected.techStack.map((t) => (
                   <Badge key={t}>{t}</Badge>
                 ))}

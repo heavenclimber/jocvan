@@ -21,21 +21,44 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+/* ── Breakpoint must match Tailwind's `md` (768px) ── */
+const MD_BREAKPOINT = 768;
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < MD_BREAKPOINT);
+    check();
+    window.addEventListener("resize", check, { passive: true });
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  return isMobile;
+}
+
 export default function HomeClient() {
   const containerRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
   const { background } = useBackground();
+  const isMobile = useIsMobile();
 
   /* ── Lock body scroll while preloader is active ── */
   useEffect(() => {
     if (!loaded) {
-      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.inset = "0";
+      document.body.style.width = "100%";
     } else {
-      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.inset = "";
+      document.body.style.width = "";
     }
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.inset = "";
+      document.body.style.width = "";
     };
   }, [loaded]);
 
@@ -63,8 +86,11 @@ export default function HomeClient() {
     }
   }, []);
 
+  /* ═══════════════════════════════════════════════════
+   *  GSAP horizontal scroll — DESKTOP ONLY
+   * ═══════════════════════════════════════════════════ */
   useGSAP(() => {
-    if (!loaded) return;
+    if (!loaded || isMobile) return;
     if (!wrapperRef.current || !containerRef.current) return;
 
     const ctx = gsap.context(() => {
@@ -98,8 +124,8 @@ export default function HomeClient() {
               scrollTrigger: {
                 trigger: section,
                 containerAnimation: scrollTween,
-                start: "left 80%", // Trigger when left edge is 80% across the screen
-                end: "right 20%",  // Reverse when right edge is 20% across the screen
+                start: "left 80%",
+                end: "right 20%",
                 toggleActions: "play reverse play reverse",
               },
             });
@@ -123,7 +149,7 @@ export default function HomeClient() {
           });
         });
 
-        // ── Expose global section navigator for Navbar ──
+        // ── Expose global section navigator for Navbar (desktop) ──
         const navigate = (index: number) => {
           if (!containerRef.current) return;
           const panels =
@@ -150,13 +176,91 @@ export default function HomeClient() {
     }, wrapperRef);
 
     return () => ctx.revert();
-  }, [loaded]);
+  }, [loaded, isMobile]);
+
+  /* ═══════════════════════════════════════════════════
+   *  GSAP vertical scroll-triggered animations — MOBILE ONLY
+   * ═══════════════════════════════════════════════════ */
+  useGSAP(() => {
+    if (!loaded || !isMobile) return;
+    if (!wrapperRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const init = () => {
+        // Simple scroll-in for each section on mobile
+        const sections = gsap.utils.toArray<HTMLElement>(".vertical-section");
+        sections.forEach((section) => {
+          gsap.from(section, {
+            y: 60,
+            opacity: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          });
+
+          // Also animate inner .gsap-animate elements
+          const q = gsap.utils.selector(section);
+          gsap.from(q(".gsap-animate"), {
+            y: 40,
+            opacity: 0,
+            stagger: 0.08,
+            duration: 0.7,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          });
+        });
+
+        // ── Mobile navigator: scroll to section by ID ──
+        const navigate = (index: number) => {
+          const sectionIds = [
+            "hero", "about", "education", "skills",
+            "experience", "portfolio", "contact",
+          ];
+          const id = sectionIds[index];
+          if (!id) return;
+          const el = document.getElementById(id);
+          if (el) el.scrollIntoView({ behavior: "smooth" });
+        };
+
+        (window as any).__navigateToSection = navigate;
+      };
+
+      requestAnimationFrame(() => requestAnimationFrame(init));
+    }, wrapperRef);
+
+    return () => ctx.revert();
+  }, [loaded, isMobile]);
 
   useEffect(() => {
     return () => {
       delete (window as any).__navigateToSection;
     };
   }, []);
+
+  /* ── Shared section class strings ── */
+  const desktopPanelClass =
+    "horizontal-panel w-screen h-dvh h-screen flex-shrink-0 overflow-hidden flex items-center relative py-4 sm:py-6";
+  const mobileSectionClass =
+    "vertical-section w-full min-h-dvh min-h-screen flex items-center relative py-8 px-4";
+
+  /* ── Section data for DRY rendering ── */
+  const sections = [
+    { id: "hero", component: <Hero loaded={loaded} />, center: true },
+    { id: "about", component: <About /> },
+    { id: "education", component: <Education /> },
+    { id: "skills", component: <Skills /> },
+    { id: "experience", component: <Experience /> },
+    { id: "portfolio", component: <Portfolio /> },
+    { id: "contact", component: <Contact /> },
+  ];
 
   return (
     <>
@@ -174,56 +278,41 @@ export default function HomeClient() {
           {background === "vanta-birds" && <VantaBackground type="birds" />}
           {background === "dot-pattern" && <DotPattern />}
         </div>
-        <div
-          ref={containerRef}
-          className="flex h-screen gap-12 sm:gap-24 pr-8 sm:pr-24"
-          style={{ width: "max-content" }}
-        >
-          <section
-            id="hero"
-            className="horizontal-panel w-screen h-screen flex-shrink-0 overflow-hidden flex items-center justify-center relative py-6"
+
+        {/* ═══ DESKTOP: Horizontal scroll layout ═══ */}
+        {!isMobile && (
+          <div
+            ref={containerRef}
+            className="flex h-dvh h-screen gap-24 pr-24"
+            style={{ width: "max-content" }}
           >
-            <Hero loaded={loaded} />
-          </section>
-          <section
-            id="about"
-            className="horizontal-panel w-screen h-screen flex-shrink-0 overflow-hidden flex items-center relative py-6 px-8 sm:px-0"
-          >
-            <About />
-          </section>
-          <section
-            id="education"
-            className="horizontal-panel w-screen h-screen flex-shrink-0 overflow-hidden flex items-center relative py-6 px-8 sm:px-0"
-          >
-            <Education />
-          </section>
-          <section
-            id="skills"
-            className="horizontal-panel w-screen h-screen flex-shrink-0 overflow-hidden flex items-center relative py-6 px-8 sm:px-0"
-          >
-            <Skills />
-          </section>
-          <section
-            id="experience"
-            className="horizontal-panel w-screen h-screen flex-shrink-0 overflow-hidden flex items-center relative py-6 px-8 sm:px-0"
-          >
-            <Experience />
-          </section>
-          <section
-            id="portfolio"
-            className="horizontal-panel w-screen h-screen flex-shrink-0 overflow-hidden flex items-center relative py-6 px-8 sm:px-0"
-          >
-            <Portfolio />
-          </section>
-          <section
-            id="contact"
-            className="horizontal-panel w-screen h-screen flex-shrink-0 overflow-hidden flex items-center relative py-6 px-8 sm:px-0"
-          >
-            <Contact />
-          </section>
-        </div>
+            {sections.map((s) => (
+              <section
+                key={s.id}
+                id={s.id}
+                className={`${desktopPanelClass}${s.center ? " justify-center" : ""}`}
+              >
+                {s.component}
+              </section>
+            ))}
+          </div>
+        )}
+
+        {/* ═══ MOBILE: Vertical scroll layout ═══ */}
+        {isMobile && (
+          <div ref={containerRef} className="flex flex-col">
+            {sections.map((s) => (
+              <section
+                key={s.id}
+                id={s.id}
+                className={`${mobileSectionClass}${s.center ? " justify-center" : ""}`}
+              >
+                {s.component}
+              </section>
+            ))}
+          </div>
+        )}
       </main>
     </>
   );
 }
-

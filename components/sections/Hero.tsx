@@ -10,24 +10,24 @@ export default function Hero({ loaded = true }: { loaded?: boolean }) {
 
   return (
     <div className="flex h-full w-full items-center justify-center text-center">
-      <div className="relative z-10 flex flex-col items-center px-6 max-w-4xl mx-auto">
+      <div className="relative z-10 flex flex-col items-center px-4 sm:px-6 max-w-4xl mx-auto">
         {/* Greeting */}
-        <p className="gsap-animate mb-6 text-sm font-bold tracking-widest text-blue-400 uppercase drop-shadow-md">
+        <p className="gsap-animate mb-4 sm:mb-6 text-xs sm:text-sm font-bold tracking-widest text-blue-400 uppercase drop-shadow-md">
           {dict.hero.greeting}
         </p>
 
         {/* Animated SVG Name */}
-        <div className="gsap-animate mb-6 w-full max-w-xl" style={{ overflow: "visible" }}>
+        <div className="gsap-animate mb-4 sm:mb-6 w-full max-w-[280px] sm:max-w-xl" style={{ overflow: "visible" }}>
           <AnimatedName loaded={loaded} />
         </div>
 
         {/* Title */}
-        <p className="gsap-animate mb-2 text-xl font-bold text-zinc-100 sm:text-2xl drop-shadow-sm">
+        <p className="gsap-animate mb-1 sm:mb-2 text-base sm:text-xl font-bold text-zinc-100 md:text-2xl drop-shadow-sm">
           {profile.title}
         </p>
 
         {/* Tagline */}
-        <p className="gsap-animate mx-auto mb-10 max-w-lg text-base font-medium text-zinc-300 drop-shadow-sm">
+        <p className="gsap-animate mx-auto mb-6 sm:mb-10 max-w-lg text-sm sm:text-base font-medium text-zinc-300 drop-shadow-sm">
           {profile.tagline}
         </p>
 

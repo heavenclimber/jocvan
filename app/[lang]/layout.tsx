@@ -8,7 +8,15 @@ import type { Locale } from "@/lib/locales";
 import { DictProvider } from "@/lib/DictContext";
 import Navbar from "@/components/layout/Navbar";
 import { BackgroundProvider } from "@/lib/BackgroundContext";
+import type { Viewport } from "next";
 import "@/app/globals.css";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  viewportFit: "cover",
+};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

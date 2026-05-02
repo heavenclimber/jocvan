@@ -65,14 +65,14 @@ export default function Joystick({ onMove }: JoystickProps) {
   return (
     <div
       ref={baseRef}
-      className="relative w-24 h-24 rounded-full bg-white/5 border border-white/20 backdrop-blur-md flex items-center justify-center touch-none select-none shadow-[0_4px_20px_rgba(0,0,0,0.4)] z-50 cursor-pointer"
+      className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white/5 border border-white/20 backdrop-blur-md flex items-center justify-center touch-none select-none shadow-[0_4px_20px_rgba(0,0,0,0.4)] z-50 cursor-pointer"
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
     >
       <div
-        className="absolute w-12 h-12 rounded-full bg-blue-500/80 shadow-[0_0_15px_rgba(59,130,246,0.5)] border border-blue-400/50 pointer-events-none"
+        className="absolute w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-500/80 shadow-[0_0_15px_rgba(59,130,246,0.5)] border border-blue-400/50 pointer-events-none"
         style={{ transform: `translate(${pos.x}px, ${pos.y}px)` }}
       />
       

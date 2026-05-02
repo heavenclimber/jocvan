@@ -289,6 +289,9 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         inset: 0,
         zIndex: 9999,
         pointerEvents: "none",
+        backgroundColor: "#000814",
+        WebkitTransform: "translateZ(0)",
+        transform: "translateZ(0)",
       }}
     >
       {/* ── Loader UI Content ── */}

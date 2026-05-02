@@ -28,7 +28,7 @@ function TechCard({
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="group relative flex flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm p-5 cursor-pointer transition-all duration-300 hover:border-white/25 hover:bg-white/[0.07] shrink-0 w-[140px] sm:w-[160px] md:w-[calc(100vw/7-1.5rem)] max-w-[200px]"
+      className="group relative flex flex-col items-center justify-center gap-2 sm:gap-3 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm p-3 sm:p-5 cursor-pointer transition-all duration-300 hover:border-white/25 hover:bg-white/[0.07] shrink-0 w-[100px] sm:w-[140px] md:w-[160px] lg:w-[calc(100vw/7-1.5rem)] max-w-[200px]"
       style={{
         boxShadow: hovered
           ? `0 0 24px 4px ${glowColor}33, 0 4px 24px 0 rgba(0,0,0,0.4)`
@@ -106,13 +106,13 @@ export default function Skills() {
           <p className="mb-1 text-sm font-medium tracking-widest text-blue-400 uppercase">
             {dict.skills.eyebrow}
           </p>
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="text-2xl font-bold text-white sm:text-3xl md:text-4xl">
             {dict.skills.heading}
           </h2>
         </div>
 
         {/* Category Filter Tabs */}
-        <div className="gsap-animate mb-10 flex flex-wrap gap-2">
+        <div className="gsap-animate mb-6 sm:mb-10 flex flex-wrap gap-2">
           {techCategories.map((cat) => {
             const active = cat === activeCategory;
             return (

@@ -13,6 +13,8 @@
 /* ── Globals ── */
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -21,6 +23,7 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
 }
 
 /* ── Custom scrollbar ── */
@@ -167,4 +170,48 @@ header {
 
 .preloader__overlay-path {
   /* Individual paths get their fill via inline url(#gradient) */
+}
+
+/* ══════════════════════════════════════════════
+ *  MOBILE RESPONSIVE UTILITIES
+ * ══════════════════════════════════════════════ */
+
+/* Use dynamic viewport height where supported */
+.h-dvh {
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* Mobile-first touch optimizations */
+@media (max-width: 767px) {
+  .preloader__logo {
+    width: 72px;
+    height: 72px;
+  }
+
+  .preloader__logo-text {
+    font-size: 1.75rem;
+  }
+
+  .preloader__progress-track {
+    width: 160px;
+  }
+
+  /* On mobile (vertical scroll), Phaser sets touch-action:none on its
+     canvas which blocks native scrolling. Override it so users can
+     scroll past the game section. The game itself is controlled via
+     the Joystick overlay, not direct canvas touch. */
+  canvas {
+    touch-action: pan-y !important;
+  }
+}
+
+/* Safe area padding for notched devices */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
 }

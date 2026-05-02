@@ -71,7 +71,7 @@ export default function AnimatedName({ loaded = true }: { loaded?: boolean }) {
 
   return (
     <div 
-      className="flex flex-wrap gap-x-4 font-black text-6xl md:text-8xl tracking-tight text-white uppercase overflow-hidden justify-center"
+      className="flex flex-wrap gap-x-2 sm:gap-x-4 font-black text-4xl sm:text-6xl md:text-8xl tracking-tight text-white uppercase overflow-hidden justify-center"
       ref={containerRef}
     >
       {words.map((word, wordIndex) => (

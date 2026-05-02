@@ -27,7 +27,10 @@ export default function LanguageSwitcher({ currentLang }: LanguageSwitcherProps)
     // Replace the current locale segment in the path
     const segments = pathname.split("/");
     segments[1] = locale; // segments[0] is "", segments[1] is the locale
-    router.push(segments.join("/") || "/");
+    
+    // Preserve the hash if present
+    const hash = typeof window !== "undefined" ? window.location.hash : "";
+    router.push((segments.join("/") || "/") + hash);
   };
 
   return (
@@ -44,7 +47,7 @@ export default function LanguageSwitcher({ currentLang }: LanguageSwitcherProps)
           }`}
         >
           <span className="text-base leading-none">{FLAGS[locale]}</span>
-          <span>{LABELS[locale]}</span>
+          <span className="hidden sm:inline">{LABELS[locale]}</span>
         </button>
       ))}
     </div>

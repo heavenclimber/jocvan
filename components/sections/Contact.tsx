@@ -13,10 +13,10 @@ export default function Contact() {
         <p className="mb-2 text-sm font-medium tracking-widest text-blue-400 uppercase">
           {dict.contact.eyebrow}
         </p>
-        <h2 className="text-4xl font-bold text-white sm:text-5xl">{dict.contact.heading}</h2>
+        <h2 className="text-2xl font-bold text-white sm:text-4xl md:text-5xl">{dict.contact.heading}</h2>
       </div>
 
-      <p className="gsap-animate mx-auto max-w-lg text-zinc-300 mb-10 leading-relaxed text-lg">
+      <p className="gsap-animate mx-auto max-w-lg text-zinc-300 mb-6 sm:mb-10 leading-relaxed text-sm sm:text-lg">
         {dict.contact.body}
       </p>
 
@@ -26,7 +26,7 @@ export default function Contact() {
         </Button>
       </div>
 
-      <div className="gsap-animate mt-20 flex gap-6">
+      <div className="gsap-animate mt-10 sm:mt-20 flex flex-wrap justify-center gap-4 sm:gap-6">
         {profile.socials.map((s) => (
           <a key={s.platform} href={s.url} target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-blue-400 transition-colors cursor-pointer">
             {s.platform}
