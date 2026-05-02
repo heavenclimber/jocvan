@@ -8,6 +8,7 @@ import type { Locale } from "@/lib/locales";
 import { DictProvider } from "@/lib/DictContext";
 import Navbar from "@/components/layout/Navbar";
 import { BackgroundProvider } from "@/lib/BackgroundContext";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Viewport } from "next";
 import "@/app/globals.css";
 
@@ -31,12 +32,27 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: SITE_CONFIG.title,
   description: SITE_CONFIG.description,
+  keywords: SITE_CONFIG.keywords,
+  authors: [{ name: "Jovan Maurel Bastian", url: SITE_CONFIG.url }],
+  creator: "Jovan Maurel Bastian",
   metadataBase: new URL(SITE_CONFIG.url),
   openGraph: {
     title: SITE_CONFIG.title,
     description: SITE_CONFIG.description,
     url: SITE_CONFIG.url,
+    siteName: "Jovan Maurel Bastian Portfolio",
     type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
@@ -69,6 +85,7 @@ export default async function LocaleLayout({
             {children}
           </DictProvider>
         </BackgroundProvider>
+        {SITE_CONFIG.gaId !== "G-XXXXXXXXXX" && <GoogleAnalytics gaId={SITE_CONFIG.gaId} />}
       </body>
     </html>
   );

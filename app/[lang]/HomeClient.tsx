@@ -93,8 +93,12 @@ export default function HomeClient() {
     if (!loaded || isMobile) return;
     if (!wrapperRef.current || !containerRef.current) return;
 
-    const ctx = gsap.context(() => {
-      const init = () => {
+    let rAF1: number;
+    let rAF2: number;
+    const ctx = gsap.context(() => {}, wrapperRef);
+
+    const init = () => {
+      ctx.add(() => {
         const sections = gsap.utils.toArray<HTMLElement>(".horizontal-panel");
         if (!sections.length) return;
 
@@ -113,7 +117,6 @@ export default function HomeClient() {
         });
 
         sections.forEach((section) => {
-          // 1. Animate the entire section wrapper (fade and scale)
           const innerWrapper = section.children[0];
           if (innerWrapper) {
             gsap.from(innerWrapper, {
@@ -131,7 +134,6 @@ export default function HomeClient() {
             });
           }
 
-          // 2. Animate specific internal elements for a staggered effect
           const q = gsap.utils.selector(section);
           gsap.from(q(".gsap-animate"), {
             y: 50,
@@ -149,11 +151,9 @@ export default function HomeClient() {
           });
         });
 
-        // ── Expose global section navigator for Navbar (desktop) ──
         const navigate = (index: number) => {
           if (!containerRef.current) return;
-          const panels =
-            containerRef.current.querySelectorAll(".horizontal-panel");
+          const panels = containerRef.current.querySelectorAll(".horizontal-panel");
           const panel = panels[index] as HTMLElement | undefined;
           if (!panel) return;
 
@@ -170,12 +170,18 @@ export default function HomeClient() {
         (window as any).__navigateToSection = navigate;
 
         ScrollTrigger.refresh();
-      };
+      });
+    };
 
-      requestAnimationFrame(() => requestAnimationFrame(init));
-    }, wrapperRef);
+    rAF1 = requestAnimationFrame(() => {
+      rAF2 = requestAnimationFrame(init);
+    });
 
-    return () => ctx.revert();
+    return () => {
+      cancelAnimationFrame(rAF1);
+      cancelAnimationFrame(rAF2);
+      ctx.revert();
+    };
   }, [loaded, isMobile]);
 
   /* ═══════════════════════════════════════════════════
@@ -185,9 +191,12 @@ export default function HomeClient() {
     if (!loaded || !isMobile) return;
     if (!wrapperRef.current) return;
 
-    const ctx = gsap.context(() => {
-      const init = () => {
-        // Simple scroll-in for each section on mobile
+    let rAF1: number;
+    let rAF2: number;
+    const ctx = gsap.context(() => {}, wrapperRef);
+
+    const init = () => {
+      ctx.add(() => {
         const sections = gsap.utils.toArray<HTMLElement>(".vertical-section");
         sections.forEach((section) => {
           gsap.from(section, {
@@ -202,7 +211,6 @@ export default function HomeClient() {
             },
           });
 
-          // Also animate inner .gsap-animate elements
           const q = gsap.utils.selector(section);
           gsap.from(q(".gsap-animate"), {
             y: 40,
@@ -218,7 +226,6 @@ export default function HomeClient() {
           });
         });
 
-        // ── Mobile navigator: scroll to section by ID ──
         const navigate = (index: number) => {
           const sectionIds = [
             "hero", "about", "education", "skills",
@@ -231,12 +238,18 @@ export default function HomeClient() {
         };
 
         (window as any).__navigateToSection = navigate;
-      };
+      });
+    };
 
-      requestAnimationFrame(() => requestAnimationFrame(init));
-    }, wrapperRef);
+    rAF1 = requestAnimationFrame(() => {
+      rAF2 = requestAnimationFrame(init);
+    });
 
-    return () => ctx.revert();
+    return () => {
+      cancelAnimationFrame(rAF1);
+      cancelAnimationFrame(rAF2);
+      ctx.revert();
+    };
   }, [loaded, isMobile]);
 
   useEffect(() => {
