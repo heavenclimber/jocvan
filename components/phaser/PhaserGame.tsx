@@ -13,7 +13,11 @@ interface PhaserGameProps {
 
 const MD_BREAKPOINT = 768;
 
-export default function PhaserGame({ onNodeReached, onNodeLeft, gameRef }: PhaserGameProps) {
+export default function PhaserGame({
+  onNodeReached,
+  onNodeLeft,
+  gameRef,
+}: PhaserGameProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -38,7 +42,7 @@ export default function PhaserGame({ onNodeReached, onNodeLeft, gameRef }: Phase
       input: {
         // Disable touch/mouse capture so events pass through to the browser
         touch: { capture: false },
-        mouse: { capture: false },
+        mouse: {},
       },
       audio: {
         // Prevent "Cannot resume/suspend a closed AudioContext" errors
