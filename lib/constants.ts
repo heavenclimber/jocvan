@@ -11,8 +11,22 @@ export const NAV_LINKS: NavLink[] = [
 ];
 
 export const SITE_CONFIG = {
-  title: "Jocvan — Portfolio",
+  title: "Jovan Maurel Bastian — Frontend Developer & Software Engineer",
   description:
-    "Personal CV & portfolio website showcasing projects, skills, and experience.",
+    "Personal portfolio of Jovan Maurel Bastian (Jovan IT), a Frontend Developer specializing in React, Next.js, and interactive 3D web experiences.",
   url: "https://jocvan.dev",
+  keywords: [
+    "Jovan Maurel Bastian",
+    "Jovan Bastian",
+    "Jovan IT",
+    "jovan frontend",
+    "jovan react",
+    "Jocvan",
+    "Frontend Developer",
+    "Software Engineer",
+    "Next.js Developer",
+    "React Developer",
+    "Web Developer Indonesia"
+  ],
+  gaId: process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX",
 } as const;
