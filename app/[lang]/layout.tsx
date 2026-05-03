@@ -9,6 +9,7 @@ import { DictProvider } from "@/lib/DictContext";
 import Navbar from "@/components/layout/Navbar";
 import { BackgroundProvider } from "@/lib/BackgroundContext";
 import type { Viewport } from "next";
+import Script from "next/script";
 import "@/app/globals.css";
 
 export const viewport: Viewport = {
@@ -80,17 +81,18 @@ export default async function LocaleLayout({
       <head>
         {SITE_CONFIG.gaId !== "G-XXXXXXXXXX" && (
           <>
-            <script async src={`https://www.googletagmanager.com/gtag/js?id=${SITE_CONFIG.gaId}`}></script>
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${SITE_CONFIG.gaId}');
-                `,
-              }}
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${SITE_CONFIG.gaId}`}
+              strategy="afterInteractive"
             />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${SITE_CONFIG.gaId}');
+              `}
+            </Script>
           </>
         )}
       </head>

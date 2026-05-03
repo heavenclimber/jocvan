@@ -136,6 +136,12 @@ export const techStack: TechItem[] = [
     category: "Tools & DevOps",
   },
   { name: "Linux", icon: "linux", color: "FCC624", category: "Tools & DevOps" },
+  {
+    name: "Google Analytics",
+    icon: "googleanalytics",
+    color: "E37400",
+    category: "Tools & DevOps",
+  },
 ];
 
 export const techCategories = [

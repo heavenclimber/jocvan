@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -94,7 +94,7 @@ header {
   font-size: 2.25rem;
   font-weight: 800;
   letter-spacing: 0.04em;
-  background: linear-gradient(135deg, #00c99b 0%, #ff0ea1 50%, #ffd392 100%);
+  background: linear-gradient(135deg, #e0f2fe 0%, #3b82f6 50%, #1e3a8a 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -114,13 +114,21 @@ header {
   position: absolute;
   inset: -6px;
   border-radius: 50%;
-  border: 1px solid rgba(0, 201, 155, 0.2);
-  animation: preloader-ring-pulse 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.6s;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  animation: preloader-ring-pulse 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite
+    0.6s;
 }
 
 @keyframes preloader-ring-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.6; }
-  50%      { transform: scale(1.15); opacity: 0.2; }
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.2;
+  }
 }
 
 /* ── Tagline ── */
@@ -145,7 +153,7 @@ header {
   height: 100%;
   width: 0%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #00c99b, #ff0ea1);
+  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
   transition: width 0.15s ease;
 }
 
@@ -214,4 +222,67 @@ header {
   .safe-area-top {
     padding-top: env(safe-area-inset-top);
   }
+}
+
+/* ── Journey Custom Animations ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0.1; }
+  25% { transform: translateY(-30px) translateX(15px); opacity: 0.3; }
+  50% { transform: translateY(-50px) translateX(-10px); opacity: 0.15; }
+  75% { transform: translateY(-25px) translateX(-15px); opacity: 0.25; }
+}
+.animate-float { animation: float 25s ease-in-out infinite; } /* SLOW float */
+
+@keyframes journey-shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-3px) rotate(-1deg); }
+  20%, 40%, 60%, 80% { transform: translateX(3px) rotate(1deg); }
+}
+.animate-journey-shake { animation: journey-shake 0.8s ease-in-out infinite; }
+
+@keyframes journey-jump {
+  0%, 100% { transform: translateY(0) scale(1, 1); }
+  50% { transform: translateY(-15px) scale(0.98, 1.02); }
+}
+.animate-journey-jump { animation: journey-jump 2s ease-in-out infinite; }
+
+@keyframes journey-flying {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(1.5deg); }
+}
+.animate-journey-flying { animation: journey-flying 4s ease-in-out infinite; }
+
+@keyframes journey-zoom {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+.animate-journey-zoom { animation: journey-zoom 5s ease-in-out infinite; }
+
+@keyframes journey-typing {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-1.5px) translateX(1px); }
+  50% { transform: translateY(0); }
+  75% { transform: translateY(-1px) translateX(-1px); }
+}
+.animate-journey-typing { animation: journey-typing 0.3s ease-in-out infinite; }
+
+@keyframes shiny {
+  0% { transform: translateX(-150%) skewX(-15deg); }
+  100% { transform: translateX(200%) skewX(-15deg); }
+}
+.animate-shiny {
+  position: relative;
+  overflow: hidden;
+}
+.animate-shiny::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 100%);
+  transform: translateX(-150%) skewX(-15deg);
+  animation: shiny 4s infinite;
+  pointer-events: none;
 }

@@ -37,10 +37,12 @@ function useIsMobile() {
   return isMobile;
 }
 
+let hasLoadedOnce = false;
+
 export default function HomeClient() {
   const containerRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(hasLoadedOnce);
   const { background } = useBackground();
   const isMobile = useIsMobile();
 
@@ -62,9 +64,20 @@ export default function HomeClient() {
     };
   }, [loaded]);
 
+  /* ── Instantly show navbar if preloader was skipped ── */
+  useEffect(() => {
+    if (hasLoadedOnce) {
+      const navbar = document.querySelector("header");
+      if (navbar) {
+        gsap.set(navbar, { y: 0, opacity: 1 });
+      }
+    }
+  }, []);
+
   /* ── Called when preloader finishes its reveal transition ── */
   const handlePreloaderComplete = useCallback(() => {
     setLoaded(true);
+    hasLoadedOnce = true;
 
     // Animate the navbar in
     const navbar = document.querySelector("header");

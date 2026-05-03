@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { useDict } from "@/lib/DictContext";
 import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
 import BackgroundSwitcher from "@/components/layout/BackgroundSwitcher";
+import { usePathname } from "next/navigation";
 import type { Locale } from "@/lib/locales";
 
 function navigateToSection(index: number) {
@@ -19,6 +20,7 @@ interface NavbarProps {
 }
 
 export default function Navbar({ lang }: NavbarProps) {
+  const pathname = usePathname();
   const dict = useDict();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -28,6 +30,8 @@ export default function Navbar({ lang }: NavbarProps) {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  if (pathname.includes('/journey')) return null;
 
   const handleNav = (e: React.MouseEvent, index?: number) => {
     e.preventDefault();
