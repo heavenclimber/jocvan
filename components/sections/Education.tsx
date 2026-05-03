@@ -26,11 +26,13 @@ export default function Education() {
   }, [router, lang]);
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
+    <div className="relative w-full min-h-[60vh] lg:h-full flex items-center justify-center">
       {/* 3D Door Scene — fills entire panel, transparent background */}
-      <DoorScene 
-        onDoorOpened={handleDoorOpened} 
-        hintText={(dict.education as any).doorCta || "(hint) click the door to see my origin"} 
+      <DoorScene
+        onDoorOpened={handleDoorOpened}
+        hintText={
+          (dict.education as any).doorCta || "click the door to see my origin"
+        }
       />
     </div>
   );

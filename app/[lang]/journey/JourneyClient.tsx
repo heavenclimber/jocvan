@@ -328,9 +328,9 @@ export default function JourneyClient() {
         </div>
 
         {/* ── Main Content — Frame on the Wall ── */}
-        <div className="relative z-10 h-full flex items-center justify-center px-6 sm:px-12 pointer-events-none">
+        <div className="relative z-10 h-full flex items-center justify-center px-4 sm:px-12 pt-24 pb-24 lg:py-0 pointer-events-none">
           <div
-            className="w-full max-w-5xl flex flex-col lg:flex-row items-center gap-8 lg:gap-16 transition-all duration-300 pointer-events-auto"
+            className="w-full max-w-5xl flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-16 transition-all duration-300 pointer-events-auto h-full lg:h-auto"
             style={{
               opacity: isTransitioning ? 0 : 1,
               transform: isTransitioning
@@ -339,7 +339,7 @@ export default function JourneyClient() {
             }}
           >
             {/* Frame / Image — Left side */}
-            <div className="relative w-full max-w-sm lg:max-w-md shrink-0">
+            <div className="relative w-full max-w-[260px] sm:max-w-sm lg:max-w-md shrink-0 mt-auto lg:mt-0">
               {/* Frame border with glow */}
               <div
                 className="absolute -inset-3 rounded-2xl opacity-40 blur-xl transition-colors duration-300"
@@ -349,7 +349,9 @@ export default function JourneyClient() {
               />
 
               {/* The actual framed image */}
-              <div className={`relative rounded-xl overflow-hidden border-2 border-white/10 shadow-2xl aspect-[4/3] bg-black/50 ${displayConfig.animationClass}`}>
+              <div
+                className={`relative rounded-xl overflow-hidden border-2 border-white/10 shadow-2xl aspect-[4/3] bg-black/50 ${displayConfig.animationClass}`}
+              >
                 <Image
                   src={displayConfig.image}
                   alt={displayConfig.title}
@@ -362,9 +364,9 @@ export default function JourneyClient() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
 
                 {/* Year badge on frame */}
-                <div className="absolute bottom-4 left-4 px-4 py-2 bg-black/70 backdrop-blur-md rounded-lg border border-white/10">
+                <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 px-3 py-1.5 sm:px-4 sm:py-2 bg-black/70 backdrop-blur-md rounded-lg border border-white/10">
                   <span
-                    className="text-sm font-bold tracking-widest"
+                    className="text-xs sm:text-sm font-bold tracking-widest"
                     style={{ color: displayConfig.accent }}
                   >
                     {displayConfig.year}
@@ -374,45 +376,47 @@ export default function JourneyClient() {
             </div>
 
             {/* Text Content — Right side */}
-            <div className="flex-1 text-center lg:text-left">
+            <div className="flex-1 text-center lg:text-left overflow-y-auto overflow-x-hidden max-h-[35vh] lg:max-h-none lg:overflow-visible pr-2 sm:pr-0 mb-auto lg:mb-0 w-full [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full">
               {/* Section number */}
-              <div className="mb-4 flex items-center gap-3 justify-center lg:justify-start">
+              <div className="mb-3 sm:mb-4 flex items-center gap-3 justify-center lg:justify-start">
                 <span
-                  className="text-xs font-bold tracking-[0.3em] uppercase transition-colors duration-300"
+                  className="text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase transition-colors duration-300"
                   style={{ color: displayConfig.accent }}
                 >
                   Chapter {displayedSection + 1}
                 </span>
                 <div
-                  className="h-px w-12 transition-colors duration-300"
+                  className="h-px w-8 sm:w-12 transition-colors duration-300"
                   style={{ backgroundColor: displayConfig.accent }}
                 />
               </div>
 
               {/* Title */}
-              <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 tracking-tight leading-tight ${displayConfig.animationClass}`}>
+              <h1
+                className={`text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 tracking-tight leading-tight ${displayConfig.animationClass}`}
+              >
                 {displayConfig.title}
               </h1>
 
               {/* Subtitle */}
               <h2
-                className="text-lg sm:text-xl md:text-2xl font-medium mb-6 transition-colors duration-300"
+                className="text-base sm:text-xl md:text-2xl font-medium mb-4 sm:mb-6 transition-colors duration-300"
                 style={{ color: displayConfig.accent }}
               >
                 {displayConfig.subtitle}
               </h2>
 
               {/* Description */}
-              <p className="text-sm sm:text-base text-zinc-300/90 leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
+              <p className="text-xs sm:text-base text-zinc-300/90 leading-relaxed mb-6 sm:mb-8 max-w-xl mx-auto lg:mx-0">
                 {displayConfig.description}
               </p>
 
               {/* Details list */}
-              <ul className="space-y-3 max-w-xl mx-auto lg:mx-0">
+              <ul className="space-y-2 sm:space-y-3 max-w-xl mx-auto lg:mx-0 pb-4 lg:pb-0">
                 {displayConfig.details.map((detail, i) => (
                   <li
                     key={i}
-                    className="flex items-start gap-3 text-sm text-zinc-400"
+                    className="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-zinc-400 text-left"
                     style={{
                       opacity: isTransitioning ? 0 : 1,
                       transform: isTransitioning
@@ -422,7 +426,7 @@ export default function JourneyClient() {
                     }}
                   >
                     <span
-                      className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 transition-colors duration-300"
+                      className="mt-1 sm:mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 transition-colors duration-300"
                       style={{ backgroundColor: displayConfig.accent }}
                     />
                     {detail}
@@ -505,10 +509,10 @@ export default function JourneyClient() {
                 height: `${1 + (i % 3)}px`,
                 left: `${(i * 13) % 100}%`,
                 top: `${(i * 19) % 100}%`,
-                opacity: 0.1 + ((i % 4) * 0.15),
+                opacity: 0.1 + (i % 4) * 0.15,
                 animationDelay: `${(i * 3) % 8}s`,
                 animationDuration: `${20 + ((i * 7) % 25)}s`,
-                boxShadow: `0 0 ${3 + (i % 4)}px rgba(255,255,255,0.6)`
+                boxShadow: `0 0 ${3 + (i % 4)}px rgba(255,255,255,0.6)`,
               }}
             />
           ))}
