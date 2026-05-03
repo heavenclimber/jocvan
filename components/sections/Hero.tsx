@@ -33,10 +33,20 @@ export default function Hero({ loaded = true }: { loaded?: boolean }) {
 
         {/* CTA Buttons */}
         <div className="gsap-animate flex flex-wrap items-center justify-center gap-4">
-          <Button href="/doc/Jovan_Maurel_Bastian.pdf" variant="primary">
+          <Button href="/doc/Jovan_Maurel_Bastian.pdf" variant="primary" external>
             {dict.hero.downloadCV}
           </Button>
-          <Button href="#contact" variant="outline">
+          <Button 
+            onClick={(e) => {
+              e.preventDefault();
+              if (typeof window !== "undefined" && (window as any).__navigateToSection) {
+                (window as any).__navigateToSection(6);
+              } else {
+                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+              }
+            }} 
+            variant="outline"
+          >
             {dict.hero.getInTouch}
           </Button>
         </div>

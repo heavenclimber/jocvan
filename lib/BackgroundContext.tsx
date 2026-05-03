@@ -12,7 +12,7 @@ interface BackgroundContextType {
 const BackgroundContext = createContext<BackgroundContextType | undefined>(undefined);
 
 export function BackgroundProvider({ children }: { children: React.ReactNode }) {
-  const [background, setBackgroundState] = useState<BackgroundType>("vanta-fog");
+  const [background, setBackgroundState] = useState<BackgroundType>("dot-pattern");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

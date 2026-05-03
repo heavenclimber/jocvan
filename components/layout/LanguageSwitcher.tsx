@@ -4,10 +4,10 @@ import { useRouter, usePathname } from "next/navigation";
 import { LOCALES } from "@/lib/locales";
 import type { Locale } from "@/lib/locales";
 
-const FLAGS: Record<Locale, string> = {
-  en: "🇬🇧",
-  id: "🇮🇩",
-};
+// const FLAGS: Record<Locale, string> = {
+//   en: "🇬🇧",
+//   id: "🇮🇩",
+// };
 
 const LABELS: Record<Locale, string> = {
   en: "EN",
@@ -18,7 +18,9 @@ interface LanguageSwitcherProps {
   currentLang: Locale;
 }
 
-export default function LanguageSwitcher({ currentLang }: LanguageSwitcherProps) {
+export default function LanguageSwitcher({
+  currentLang,
+}: LanguageSwitcherProps) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -27,7 +29,7 @@ export default function LanguageSwitcher({ currentLang }: LanguageSwitcherProps)
     // Replace the current locale segment in the path
     const segments = pathname.split("/");
     segments[1] = locale; // segments[0] is "", segments[1] is the locale
-    
+
     // Preserve the hash if present
     const hash = typeof window !== "undefined" ? window.location.hash : "";
     router.push((segments.join("/") || "/") + hash);
@@ -46,7 +48,7 @@ export default function LanguageSwitcher({ currentLang }: LanguageSwitcherProps)
               : "text-zinc-400 hover:text-white hover:bg-white/10"
           }`}
         >
-          <span className="text-base leading-none">{FLAGS[locale]}</span>
+          {/* <span className="text-base leading-none">{FLAGS[locale]}</span> */}
           <span className="hidden sm:inline">{LABELS[locale]}</span>
         </button>
       ))}

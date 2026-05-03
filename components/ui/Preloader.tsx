@@ -12,9 +12,9 @@ const DELAY_POINTS_MAX = 0.3;
 const DELAY_PER_PATH = 0.25;
 
 const GRADIENTS = [
-  { id: "gradient1", stops: ["#00c99b", "#ff0ea1"] },
-  { id: "gradient2", stops: ["#ffd392", "#ff3898"] },
-  { id: "gradient3", stops: ["#110046", "#32004a"] },
+  { id: "gradient1", stops: ["#e0f2fe", "#3b82f6"] },
+  { id: "gradient2", stops: ["#3b82f6", "#1e3a8a"] },
+  { id: "gradient3", stops: ["#000814", "#000814"] },
 ];
 
 /* ─────────────────────────────────────────────
@@ -23,7 +23,9 @@ const GRADIENTS = [
 function preloadAssets(onProgress: (pct: number) => void): Promise<void> {
   return new Promise((resolve) => {
     // Collect all <img> on the page (including those in the preloader itself).
-    const images = Array.from(document.querySelectorAll("img")) as HTMLImageElement[];
+    const images = Array.from(
+      document.querySelectorAll("img"),
+    ) as HTMLImageElement[];
 
     // Collect all CSS background images that are visible
     const bgImages: string[] = [];
@@ -42,8 +44,18 @@ function preloadAssets(onProgress: (pct: number) => void): Promise<void> {
       return img;
     });
 
-    const allImages = [...images, ...bgImgEls];
-    const total = allImages.length || 1;
+    // 3D Models to preload
+    const models = [
+      "/models/door.glb",
+      "/models/shiba.glb",
+      "/models/animated_dog_shiba_inu.glb",
+      "/models/char.glb",
+      "/models/cute_chick.glb",
+      "/models/falling_snow_loop.glb",
+      "/models/autumn_road.glb",
+    ];
+
+    const total = images.length + bgImgEls.length + models.length || 1;
     let loaded = 0;
 
     const tick = () => {
@@ -52,8 +64,13 @@ function preloadAssets(onProgress: (pct: number) => void): Promise<void> {
       if (loaded >= total) resolve();
     };
 
-    if (allImages.length === 0) {
-      // No images to load — simulate a short progress
+    if (
+      total === 1 &&
+      images.length === 0 &&
+      bgImgEls.length === 0 &&
+      models.length === 0
+    ) {
+      // No assets to load — simulate a short progress
       let fakeProgress = 0;
       const iv = setInterval(() => {
         fakeProgress += 20;
@@ -66,13 +83,21 @@ function preloadAssets(onProgress: (pct: number) => void): Promise<void> {
       return;
     }
 
-    allImages.forEach((img) => {
+    [...images, ...bgImgEls].forEach((img) => {
       if (img.complete) {
         tick();
       } else {
         img.addEventListener("load", tick, { once: true });
         img.addEventListener("error", tick, { once: true });
       }
+    });
+
+    // Fetch models as blobs to cache them
+    models.forEach((modelUrl) => {
+      fetch(modelUrl)
+        .then((res) => res.blob())
+        .then(() => tick())
+        .catch(() => tick()); // Ignore errors, just advance preloader
     });
 
     // Safety timeout so we never hang forever
@@ -87,13 +112,11 @@ function preloadAssets(onProgress: (pct: number) => void): Promise<void> {
  * SVG path builder (matches the reference code)
  * ───────────────────────────────────────────── */
 function buildPathD(points: number[], opening: boolean): string {
-  let d = opening
-    ? `M 0 0 V ${points[0]} C`
-    : `M 0 ${points[0]} C`;
+  let d = opening ? `M 0 0 V ${points[0]} C` : `M 0 ${points[0]} C`;
 
   for (let j = 0; j < points.length - 1; j++) {
     const p = ((j + 1) / (points.length - 1)) * 100;
-    const cp = p - (1 / (points.length - 1) * 100) / 2;
+    const cp = p - ((1 / (points.length - 1)) * 100) / 2;
     d += ` ${cp} ${points[j]} ${cp} ${points[j + 1]} ${p} ${points[j + 1]}`;
   }
 
@@ -187,7 +210,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         tl.to(
           points,
           { [j]: 0, duration: 0.9, ease: "power2.inOut" },
-          delay + pathDelay
+          delay + pathDelay,
         );
       }
     }
@@ -211,12 +234,12 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         .from(
           taglineRef.current,
           { y: 20, opacity: 0, duration: 0.6, ease: "power2.out" },
-          "-=0.3"
+          "-=0.3",
         )
         .from(
           progressBarRef.current?.parentElement || null,
           { scaleX: 0, opacity: 0, duration: 0.5, ease: "power2.out" },
-          "-=0.2"
+          "-=0.2",
         );
     }, containerRef);
 
@@ -258,17 +281,17 @@ export default function Preloader({ onComplete }: PreloaderProps) {
             .to(
               taglineRef.current,
               { y: -20, opacity: 0, duration: 0.3, ease: "power2.in" },
-              "-=0.25"
+              "-=0.25",
             )
             .to(
               progressBarRef.current?.parentElement || null,
               { y: -15, opacity: 0, duration: 0.3, ease: "power2.in" },
-              "-=0.2"
+              "-=0.2",
             )
             .to(
               progressRef.current,
               { y: -10, opacity: 0, duration: 0.3, ease: "power2.in" },
-              "-=0.2"
+              "-=0.2",
             );
         });
       });
@@ -304,7 +327,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
 
         {/* Tagline */}
         <p ref={taglineRef} className="preloader__tagline">
-          Loading Experience…
+          Jovan! You've got a guest!
         </p>
 
         {/* Progress bar */}

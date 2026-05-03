@@ -3,12 +3,14 @@ import { cn } from "@/lib/utils";
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "outline";
   href?: string;
+  external?: boolean;
 }
 
 export default function Button({
   children,
   variant = "primary",
   href,
+  external,
   className,
   ...props
 }: ButtonProps) {
@@ -26,7 +28,11 @@ export default function Button({
 
   if (href) {
     return (
-      <a href={href} className={classes}>
+      <a 
+        href={href} 
+        className={classes}
+        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      >
         {children}
       </a>
     );

@@ -5,7 +5,7 @@
     "education": "Pendidikan",
     "skills": "Keahlian",
     "experience": "Pengalaman",
-    "portfolio": "Portofolio",
+    "portfolio": "Portofolio -WIP",
     "contact": "Kontak"
   },
   "hero": {
@@ -22,7 +22,8 @@
   },
   "education": {
     "eyebrow": "Perjalanan akademik saya",
-    "heading": "Pendidikan"
+    "heading": "Pendidikan",
+    "doorCta": "(petunjuk) klik pintu untuk melihat asalku"
   },
   "skills": {
     "eyebrow": "Yang saya kerjakan",
