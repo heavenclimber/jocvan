@@ -12,11 +12,12 @@ export function DeskModel() {
   return (
     <group
       position={[
-        -center.x * scaleFactor,
+         -1.4 -center.x * scaleFactor,
         -center.y * scaleFactor + (size.y * scaleFactor) / 2,
-        -1.2 - center.z * scaleFactor,
+        -0.3 - center.z * scaleFactor,
       ]}
       scale={scaleFactor}
+      rotation={[0, Math.PI / 2, 0]} //fixed rotation
     >
       <primitive object={clonedScene} />
     </group>

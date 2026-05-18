@@ -16,7 +16,7 @@ export function SpeakerModel({ playing, onToggle }: SpeakerModelProps) {
   const groupRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
 
-  const targetHeight = 0.6;
+  const targetHeight = 0.23;
   const scaleFactor = size.y > 0 ? targetHeight / size.y : 1;
 
   /* Speaker vibration + glow */
@@ -77,9 +77,9 @@ export function SpeakerModel({ playing, onToggle }: SpeakerModelProps) {
     <group
       ref={groupRef}
       position={[
-        1.2 - center.x * scaleFactor,
-        -center.y * scaleFactor + size.y * scaleFactor + 0.75,
-        -1.5 - center.z * scaleFactor,
+        0.8 - center.x * scaleFactor,
+        -center.y * scaleFactor + size.y * scaleFactor + 1.13,
+        -1.2 - center.z * scaleFactor,
       ]}
       scale={scaleFactor}
     >

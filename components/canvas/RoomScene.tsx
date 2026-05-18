@@ -6,13 +6,16 @@ import * as THREE from "three";
 import { CameraSetup } from "./room/CameraSetup";
 import { CozyLighting } from "./room/CozyLighting";
 import { RoomShell } from "./room/RoomShell";
-import { DeskModel } from "./room/models/DeskModel";
-import { MonitorModel } from "./room/models/MonitorModel";
-import { SpeakerModel } from "./room/models/SpeakerModel";
+import { DeskPCModel } from "./room/models/DeskPCModel";
+import { BedModel } from "./room/models/BedModel";
+import { WindowModel } from "./room/models/WindowModel";
+import { SideTableModel } from "./room/models/SideTableModel";
+import { DogModel } from "./room/models/DogModel";
+import { LavaLampModel } from "./room/models/LavaLampModel";
 import { DustParticles } from "./room/DustParticles";
 
 /* ═══════════════════════════════════════════════════════════════
- *  SCENE CONTENT
+ *  SCENE CONTENT — Low-poly gamey room
  * ═══════════════════════════════════════════════════════════════ */
 
 interface SceneContentProps {
@@ -34,32 +37,35 @@ function SceneContent({
       {/* Room diorama shell */}
       <RoomShell />
 
-      {/* Models */}
-      <DeskModel />
-      <MonitorModel onClick={onMonitorClick} />
-      <SpeakerModel playing={speakerPlaying} onToggle={onSpeakerToggle} />
+      {/* ── Low-poly furniture ── */}
+      <DeskPCModel onClick={onMonitorClick} />
+      <BedModel />
+      <WindowModel />
+      <SideTableModel playing={speakerPlaying} onToggle={onSpeakerToggle} />
+      <LavaLampModel />
+      <DogModel />
 
       {/* Contact shadows on the floor */}
       <ContactShadows
         position={[0, 0.01, 0]}
-        opacity={0.5}
+        opacity={0.4}
         scale={5}
-        blur={2}
+        blur={1.5}
         far={4}
       />
 
-      {/* Atmosphere */}
+      {/* Atmosphere — fewer sparkles, bigger for that game-particle feel */}
       <DustParticles />
       <Sparkles
-        count={15}
-        scale={3}
-        size={1}
-        speed={0.1}
+        count={20}
+        scale={3.5}
+        size={1.5}
+        speed={0.15}
         color="#ffecd2"
-        opacity={0.2}
+        opacity={0.25}
       />
 
-      {/* OrbitControls with tight limits for fine-tuning view */}
+      {/* OrbitControls */}
       <OrbitControls
         enablePan={false}
         enableZoom={true}
@@ -119,7 +125,10 @@ export default function RoomScene({
   );
 }
 
-/* Preload models */
-useGLTF.preload("/models/room/desk.glb");
-useGLTF.preload("/models/room/monitor.glb");
-useGLTF.preload("/models/room/speaker.glb");
+/* Preload lowpoly models */
+useGLTF.preload("/models/room/lowpoly/desk_and_pc.glb");
+useGLTF.preload("/models/room/lowpoly/bed__bedside_table.glb");
+useGLTF.preload("/models/room/lowpoly/residential_window.glb");
+useGLTF.preload("/models/room/lowpoly/simple_wooden_end_table.glb");
+useGLTF.preload("/models/room/lowpoly/stylized_dog_low_poly.glb");
+useGLTF.preload("/models/room/lowpoly/lava_lamp_alembic.glb");
