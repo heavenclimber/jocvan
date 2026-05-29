@@ -49,7 +49,7 @@ export default function LanguageSwitcher({
           }`}
         >
           {/* <span className="text-base leading-none">{FLAGS[locale]}</span> */}
-          <span className="hidden sm:inline">{LABELS[locale]}</span>
+          <span>{LABELS[locale]}</span>
         </button>
       ))}
     </div>

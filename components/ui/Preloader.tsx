@@ -120,7 +120,7 @@ function buildPathD(points: number[], opening: boolean): string {
     d += ` ${cp} ${points[j]} ${cp} ${points[j + 1]} ${p} ${points[j + 1]}`;
   }
 
-  d += opening ? ` V 100 H 0` : ` V 0 H 0`;
+  d += opening ? ` V 0 H 0` : ` V 100 H 0`;
   return d;
 }
 
@@ -186,13 +186,17 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     }
 
     const tl = gsap.timeline({
+      onStart: () => {
+        // Trigger the parent component to render the main content early
+        // so it's ready and GSAP animations can start right behind the wipe
+        onComplete();
+      },
       onUpdate: () => renderPaths(true),
       onComplete: () => {
-        // Hide the entire preloader
+        // Hide the entire preloader after the wipe finishes
         if (containerRef.current) {
           containerRef.current.style.display = "none";
         }
-        onComplete();
       },
       defaults: {
         ease: "power2.inOut",
@@ -312,7 +316,6 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         inset: 0,
         zIndex: 9999,
         pointerEvents: "none",
-        backgroundColor: "#000814",
         WebkitTransform: "translateZ(0)",
         transform: "translateZ(0)",
       }}

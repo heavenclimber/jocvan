@@ -290,8 +290,8 @@ export default function HomeClient() {
 
   return (
     <>
-      {/* ── Preloader (overlays everything until done) ── */}
-      {!loaded && <Preloader onComplete={handlePreloaderComplete} />}
+      {/* ── Preloader (overlays everything until done, hides itself) ── */}
+      <Preloader onComplete={handlePreloaderComplete} />
 
       {/* ── Main content (hidden until loaded) ── */}
       <main

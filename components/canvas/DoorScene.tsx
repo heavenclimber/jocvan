@@ -80,20 +80,20 @@ function DoorModel({ onAnimationDone }: DoorModelProps) {
       openAction.clampWhenFinished = true;
       openAction.reset().play();
 
-      const onFinished = (e: { action: THREE.AnimationAction }) => {
-        if (e.action === openAction) {
-          mixer.removeEventListener("finished", onFinished);
-          // Start Phase 2 Zoom
-          setZoomPhase(2);
-          zoomProgress.current = 0;
-          startCamPos.current.copy(camera.position);
-          startCamLookAt.current
-            .copy(camera.position)
-            .add(camera.getWorldDirection(new THREE.Vector3()));
-          onAnimationDone();
-        }
-      };
-      mixer.addEventListener("finished", onFinished);
+      const clipDuration = openAction.getClip().duration;
+      // Trigger 2 seconds before finished, or immediately if duration is less than 2s
+      const triggerDelay = Math.max(0, clipDuration - 2.0);
+
+      setTimeout(() => {
+        // Start Phase 2 Zoom
+        setZoomPhase(2);
+        zoomProgress.current = 0;
+        startCamPos.current.copy(camera.position);
+        startCamLookAt.current
+          .copy(camera.position)
+          .add(camera.getWorldDirection(new THREE.Vector3()));
+        onAnimationDone();
+      }, triggerDelay * 1000);
     } else {
       setTimeout(
         () => {
