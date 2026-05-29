@@ -10,7 +10,8 @@ import About from "@/components/sections/About";
 import Education from "@/components/sections/Education";
 import Skills from "@/components/sections/Skills";
 import Experience from "@/components/sections/Experience";
-import Portfolio from "@/components/sections/Portfolio";
+// import Portfolio from "@/components/sections/Portfolio"; // Commented out: old solar-system portfolio
+import PortfolioTeaser from "@/components/sections/PortfolioTeaser";
 import Contact from "@/components/sections/Contact";
 import VantaBackground from "@/components/canvas/VantaBackground";
 import DotPattern from "@/components/canvas/DotPattern";
@@ -284,7 +285,7 @@ export default function HomeClient() {
     { id: "education", component: <Education /> },
     { id: "skills", component: <Skills /> },
     { id: "experience", component: <Experience /> },
-    { id: "portfolio", component: <Portfolio /> },
+    { id: "portfolio", component: <PortfolioTeaser /> },
     { id: "contact", component: <Contact /> },
   ];
 
